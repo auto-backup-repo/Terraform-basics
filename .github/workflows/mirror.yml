@@ -22,7 +22,8 @@ jobs:
       - name: Mirror to GitLab
         run: |
           git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@gitlab.com/vbanks.softcloud/terraform-basics-backup.git"
-          git push --mirror gitlab
+          git push gitlab --all
+          git push gitlab --tags
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
 
@@ -32,10 +33,11 @@ jobs:
       - name: Mirror to Azure DevOps
         run: |
           git remote add azure "https://${AZURE_USER}:${AZURE_PAT}@dev.azure.com/vbanks-softcloud/CloudProjects/_git/terraform-basics-backup"
-          git push --mirror azure
+          git push azure --all
+          git push azure --tags
         env:
-          AZURE_USER: ${{ secrets.AZURE_USER }}   # your Azure DevOps username
-          AZURE_PAT:  ${{ secrets.AZURE_PAT }}    # PAT with repo write access
+          AZURE_USER: ${{ secrets.AZURE_USER }}
+          AZURE_PAT:  ${{ secrets.AZURE_PAT }}
 
       #
       # --- Mirror to Bitbucket ---
@@ -43,7 +45,8 @@ jobs:
       - name: Mirror to Bitbucket
         run: |
           git remote add bitbucket "https://${BITBUCKET_USER}:${BITBUCKET_PAT}@bitbucket.org/vbanks-softcloud/terraform-basics-backup.git"
-          git push --mirror bitbucket
+          git push bitbucket --all
+          git push bitbucket --tags
         env:
-          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}  # your Bitbucket username
-          BITBUCKET_PAT:  ${{ secrets.BITBUCKET_PAT }}   # app password / PAT
+          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
+          BITBUCKET_PAT:  ${{ secrets.BITBUCKET_PAT }}
