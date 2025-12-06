@@ -44,10 +44,13 @@ jobs:
       # --- Mirror to Bitbucket ---
       #
       - name: Mirror to Bitbucket
+        env:
+          BITBUCKET_URL: ${{ secrets.BITBUCKET_URL }}   # full clone URL WITHOUT password
+          BITBUCKET_PAT: ${{ secrets.BITBUCKET_PAT }}   # app password only
         run: |
-          git remote add bitbucket "https://${BITBUCKET_USER}:${BITBUCKET_PAT}@bitbucket.org/vbanks-softcloud/terraform-basics-backup.git"
+          # Inject password into the URL dynamically
+          AUTH_URL="${BITBUCKET_URL/https:\/\//https:\/\/${BITBUCKET_PAT}@}"
+          
+          git remote add bitbucket "$AUTH_URL"
           git push bitbucket --all
           git push bitbucket --tags
-        env:
-          BITBUCKET_USER: ${{ secrets.BITBUCKET_USER }}
-          BITBUCKET_PAT:  ${{ secrets.BITBUCKET_PAT }}
